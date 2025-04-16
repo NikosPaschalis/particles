@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import GUI from 'lil-gui';
 
+
 /**
  * Base
  */
@@ -18,7 +19,7 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-
+const particleTexture = textureLoader.load('/textures/particles/9.png')
 // Particles
 //Geometry
 const particlesGeometry = new THREE.BufferGeometry();
@@ -34,13 +35,26 @@ particlesGeometry.setAttribute(
 );
 //Material
 const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.1,
+  size: 0.07,
   sizeAttenuation: true,
+  //like that you can see the edges of the particle image and they also
+  //  hide the items behind from map convert to alphamap and set transparent to true
+  transparent: true,
+  alphaMap: particleTexture,
+  // alphaTest: 0.001
+  depthWrite: false
 });
-
+particlesMaterial.color = new THREE.Color('#ff88cc');
 //Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
+
+//Cube 
+const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(),
+  new THREE.MeshBasicMaterial()
+);
+scene.add(cube)
 /**
  * Sizes
  */
