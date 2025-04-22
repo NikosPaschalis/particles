@@ -20,10 +20,11 @@ const scene = new THREE.Scene();
  */
 const textureLoader = new THREE.TextureLoader();
 const particleTexture = textureLoader.load('/textures/particles/9.png')
+
 // Particles
 //Geometry
 const particlesGeometry = new THREE.BufferGeometry();
-const count = 5000;
+const count = 50000;
 
 const positions = new Float32Array(count * 3);
 for (let i = 0; i < count; i++) {
@@ -35,26 +36,25 @@ particlesGeometry.setAttribute(
 );
 //Material
 const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.07,
+  size: 0.1,
   sizeAttenuation: true,
   //like that you can see the edges of the particle image and they also
   //  hide the items behind from map convert to alphamap and set transparent to true
   transparent: true,
   alphaMap: particleTexture,
   // alphaTest: 0.001
-  depthWrite: false
+  depthWrite: false,
+  blending: THREE.AdditiveBlending
 });
 particlesMaterial.color = new THREE.Color('#ff88cc');
 //Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
 
-//Cube 
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(),
-  new THREE.MeshBasicMaterial()
-);
-scene.add(cube)
+//Sphere 
+const geometry = new THREE.SphereGeometry( 1, 32, 32 ); 
+const material = new THREE.MeshStandardMaterial(); 
+const sphere = new THREE.Mesh( geometry, material ); scene.add( sphere );
 /**
  * Sizes
  */
@@ -102,6 +102,8 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+
 
 /**
  * Animate
