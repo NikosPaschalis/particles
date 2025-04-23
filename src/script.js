@@ -19,7 +19,7 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const particleTexture = textureLoader.load('/textures/particles/9.png')
+const particleTexture = textureLoader.load('/textures/particles/9.png');
 
 // Particles
 //Geometry
@@ -27,13 +27,17 @@ const particlesGeometry = new THREE.BufferGeometry();
 const count = 50000;
 
 const positions = new Float32Array(count * 3);
+const colors = new Float32Array(count * 3);
+
 for (let i = 0; i < count; i++) {
   positions[i] = (Math.random() - 0.5) * 10;
+  colors[i] = Math.random();
 }
 particlesGeometry.setAttribute(
   'position',
   new THREE.BufferAttribute(positions, 3)
 );
+particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 //Material
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.1,
@@ -44,17 +48,19 @@ const particlesMaterial = new THREE.PointsMaterial({
   alphaMap: particleTexture,
   // alphaTest: 0.001
   depthWrite: false,
-  blending: THREE.AdditiveBlending
+  blending: THREE.AdditiveBlending,
+  vertexColors: true,
 });
 particlesMaterial.color = new THREE.Color('#ff88cc');
 //Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
 
-//Sphere 
-const geometry = new THREE.SphereGeometry( 1, 32, 32 ); 
-const material = new THREE.MeshStandardMaterial(); 
-const sphere = new THREE.Mesh( geometry, material ); scene.add( sphere );
+//Sphere
+const geometry = new THREE.SphereGeometry(1, 32, 32);
+const material = new THREE.MeshStandardMaterial();
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere);
 /**
  * Sizes
  */
@@ -102,8 +108,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-
 
 /**
  * Animate
