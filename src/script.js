@@ -51,7 +51,7 @@ const particlesMaterial = new THREE.PointsMaterial({
   blending: THREE.AdditiveBlending,
   vertexColors: true,
 });
-particlesMaterial.color = new THREE.Color('#ff88cc');
+// particlesMaterial.color = new THREE.Color('#ff88cc');
 //Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
@@ -117,6 +117,18 @@ const clock = new THREE.Clock();
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
+  // Animate particles
+  // particles.rotation.y = elapsedTime * 0.1;
+  // particles.rotation.x = elapsedTime * 0.1;
+  // particles.rotation.z = elapsedTime * 0.1;
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3;
+    const x = particlesGeometry.attributes.position.array[i3];
+    particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(
+      elapsedTime + x
+    );
+  }
+  particlesGeometry.attributes.position.needsUpdate = true;
   // Update controls
   controls.update();
 
